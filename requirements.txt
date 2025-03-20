@@ -5,3 +5,4 @@ torchaudio
 python-dotenv
 docx2txt
 pdfplumber
+streamlit
