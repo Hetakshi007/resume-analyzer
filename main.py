@@ -1,26 +1,23 @@
+import streamlit as st
 from transformers import pipeline
-import os
-from dotenv import load_dotenv
 
-# Load API key
-load_dotenv()
-api_key = os.getenv("HUGGINGFACE_API_KEY")
+# Load API key from Streamlit secrets
+huggingface_api_key = st.secrets["HUGGINGFACE_API_KEY"]
 
-# Authenticate Hugging Face API key
-generator = pipeline(
-    "text-generation",
-    model="tiiuae/falcon-7b-instruct"
-,
-    token=api_key
-)
+# Initialize the model
+generator = pipeline("text-generation", model="tiiuae/falcon-7b-instruct", token=huggingface_api_key)
 
-def analyze_resume(resume_text, job_description):
-    prompt = f"Analyze this resume for the given job description:\nResume: {resume_text}\nJob: {job_description}"
-    response = generator(prompt, max_length=500, num_return_sequences=1)
-    return response[0]['generated_text']
+# Streamlit UI
+st.title("Resume Analyzer - AI Powered")
 
-# Example test
-resume_text = "Experienced data scientist with skills in Python and Machine Learning."
-job_description = "Looking for an AI Engineer skilled in LLMs and NLP."
+resume_text = st.text_area("Paste Resume Text Here")
+job_description = st.text_area("Paste Job Description Here")
 
-print(analyze_resume(resume_text, job_description))
+if st.button("Analyze Resume"):
+    if resume_text and job_description:
+        prompt = f"Analyze this resume for the given job description:\nResume: {resume_text}\nJob: {job_description}"
+        response = generator(prompt, max_length=500, num_return_sequences=1)
+        st.subheader("AI Analysis:")
+        st.write(response[0]['generated_text'])
+    else:
+        st.warning("Please enter both Resume and Job Description!")
