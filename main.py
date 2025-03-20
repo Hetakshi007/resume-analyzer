@@ -8,7 +8,8 @@ huggingface_api_key = st.secrets["HUGGINGFACE_API_KEY"]
 generator = pipeline(
     "text-generation",
     model="facebook/opt-1.3b",  # Change to a smaller model
-    token=huggingface_api_key
+    use_auth_token=huggingface_api_key,  # ✅ Correct authentication
+    device=0  # ✅ Use GPU if available, set to -1 for CPU
 )
 
 # Streamlit UI
