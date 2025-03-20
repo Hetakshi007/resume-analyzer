@@ -1,0 +1,7 @@
+transformers==4.48.3
+torch
+torchvision
+torchaudio
+python-dotenv
+docx2txt
+pdfplumber
