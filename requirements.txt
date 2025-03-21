@@ -1,10 +1,5 @@
-transformers==4.36.0
-torch==2.6.0
-torchvision==0.21.0
-torchaudio==2.6.0
-requests
-docx2txt
-pdfplumber
 streamlit
-huggingface-hub
-python-dotenv
+PyPDF2
+google-generativeai
+scikit-learn
+pandas
