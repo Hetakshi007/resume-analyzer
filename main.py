@@ -1,10 +1,27 @@
 import streamlit as st
+from transformers import pipeline
 
-st.title("🔍 Debugging Streamlit Secrets")
-st.write("Checking if secrets are accessible...")
+# Load API key from Streamlit secrets
+huggingface_api_key = st.secrets["HUGGINGFACE_API_KEY"]
 
-try:
-    huggingface_api_key = st.secrets["HUGGINGFACE_API_KEY"]
-    st.success("✅ Secrets loaded successfully!")
-except KeyError as e:
-    st.error(f"❌ Secret not found: {e}")
+# Use a smaller model to prevent crashes
+generator = pipeline(
+    "text-generation",
+    model="facebook/opt-1.3b",  # Change to a smaller model
+    token=huggingface_api_key
+)
+
+# Streamlit UI
+st.title("Resume Analyzer - AI Powered")
+
+resume_text = st.text_area("Paste Resume Text Here")
+job_description = st.text_area("Paste Job Description Here")
+
+if st.button("Analyze Resume"):
+    if resume_text and job_description:
+        prompt = f"Analyze this resume for the given job description:\nResume: {resume_text}\nJob: {job_description}"
+        response = generator(prompt, max_length=300, num_return_sequences=1)
+        st.subheader("AI Analysis:")
+        st.write(response[0]['generated_text'])
+    else:
+        st.warning("Please enter both Resume and Job Description!")
