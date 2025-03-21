@@ -6,3 +6,5 @@ requests
 docx2txt
 pdfplumber
 streamlit
+huggingface-hub
+
