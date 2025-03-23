@@ -5,8 +5,7 @@ import google.generativeai as genai
 import pandas as pd
 
 # Configure Gemini AI API Key
-import os
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+genai.configure(api_key="Use Your API Key here")
 model = genai.GenerativeModel('gemini-1.5-pro')
 
 # Function to extract text from a PDF
